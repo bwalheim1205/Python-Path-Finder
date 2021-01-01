@@ -30,8 +30,8 @@ pygame.display.set_caption("A* Path Finder")
 
 #Colors
 RED = (255,0,0)
-BLUE = (0, 255, 0)
-GREEN = (0, 0, 255)
+BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 ORANGE = (255, 165, 0)
@@ -238,8 +238,74 @@ class Grid:
                 #Draws vertical lines
                 pygame.draw.line(win, GRAY, (j * gap, 0), (j * gap, self.width))
 
+        #Draws the legend
+        self.draw_legend(win)
+
         #Updates display
         pygame.display.update()
+
+
+    '''
+    Draws legend on the side of the display
+    Input:
+        win - pygame display object
+    '''
+    def draw_legend(self, win):
+
+        #Creates font object
+        pygame.font.init() 
+        myfont = pygame.font.SysFont('Comic Sans MS', 15)
+
+        #Calculates color width
+        gap = self.width//self.rows
+
+        #Start key
+        textsurface = myfont.render('Start', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,25))
+        pygame.draw.rect(win, ORANGE, (self.width+100, 25, gap, gap))
+
+        #End key
+        textsurface = myfont.render('End', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,50))
+        pygame.draw.rect(win, PURPLE, (self.width+100, 50, gap, gap))
+
+        #Barrier key
+        textsurface = myfont.render('Barrier', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,75))
+        pygame.draw.rect(win, BLACK, (self.width+100, 75, gap, gap))
+
+        #Closed Key
+        textsurface = myfont.render('Closed', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,100))
+        pygame.draw.rect(win, RED, (self.width+100, 100, gap, gap))
+
+        #Open key
+        textsurface = myfont.render('Open', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,125))
+        pygame.draw.rect(win, GREEN, (self.width+100, 125, gap, gap))
+
+        #Final path key
+        textsurface = myfont.render('Final', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,150))
+        pygame.draw.rect(win, CYAN, (self.width+100, 150, gap, gap))
+        
+        #Right Click Instruction
+        textsurface = myfont.render('Left Click - ', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,self.width-175))
+        textsurface = myfont.render('   Set Start, End, Barrier', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,self.width-150))
+
+        #Left Click Instruction
+        textsurface = myfont.render('Right Click - Clears Node', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,self.width-125))
+
+        #Space Bar Instruction
+        textsurface = myfont.render('SPACE - A* Algorithm', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,self.width-100))
+
+        #Clear Instruction
+        textsurface = myfont.render('C - Clear the board', False, (0, 0, 0))
+        win.blit(textsurface,(self.width+20,self.width-75))
 
     '''
     Gets node in specified row and col
@@ -441,7 +507,7 @@ def main(window, width):
                 if event.key == pygame.K_c:
                     start = None
                     end = None
-                    board = Grid(ROWS, ROWS, width, ROWS)            
+                    board = Grid(ROWS, ROWS, width)            
 
     #Quits out of pygame
     pygame.quit()
